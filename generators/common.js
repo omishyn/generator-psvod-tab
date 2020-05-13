@@ -1,6 +1,9 @@
 const chalk = require('chalk');
 const Generator = require('yeoman-generator');
 const Utils = require('./utils');
+const { readdirSync, statSync } = require('fs');
+const { join } = require('path');
+const dirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory());
 
 module.exports = class extends Generator {
   /**
@@ -34,6 +37,10 @@ module.exports = class extends Generator {
 
   removeCR(filePath) {
     this.replaceContent(filePath, '\r\n', '\n', true);
+  }
+
+  getPages() {
+    return dirs('./src/app/pages');
   }
 
   /**

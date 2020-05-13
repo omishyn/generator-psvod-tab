@@ -1,73 +1,88 @@
 'use strict';
 const BaseGenerator = require('../common');
 const chalk = require('chalk');
-const yosay = require('yosay');
+const yoSay = require('yosay');
 const fs = require('fs');
 
 module.exports = class extends BaseGenerator {
   prompting() {
     // Have Yeoman greet the user.
     this.log(
-      yosay(`Welcome to the praiseworthy ${chalk.red('generator-psvod-tab')} generator!`)
+      yoSay(`Welcome to the ${chalk.red('PSVOD tab generator!')}`)
     );
 
-    const prompts = [
-      {
-        // type: 'confirm',
-        when: () => typeof this.page === 'undefined',
-        type: 'input',
-        name: 'page',
-        message: 'Enter page dir',
-        default: ''
-      },
-      {
-        when: () => typeof this.tab === 'undefined',
-        type: 'input',
-        name: 'tab',
-        message: 'Enter tab dir',
-        default: ''
-      }
-    ];
+    const choices = this.getPages().map(dir => ({
+      name: this.ucFirst(dir),
+      value: dir
+    }));
 
-    const done = this.async();
+    if(choices.length) {
+      const prompts = [
+        {
+          // type: 'confirm',
+          when: () => typeof this.page === 'undefined',
+          // type: 'input',
+          // name: 'page',
+          // message: 'Enter page dir',
+          // default: ''
+          type: 'list',
+          name: 'page',
+          message: 'Select page',
+          choices,
+          default: choices[0].value
+        },
+        {
+          when: () => typeof this.tab === 'undefined',
+          type: 'input',
+          name: 'tab',
+          message: 'Enter tab dir',
+          default: ''
+        }
+      ];
 
-    this.prompt(prompts)
-      .then(props => {
+      const done = this.async();
 
-      this.page = props.page;
-      this.tab = props.tab;
+      this.prompt(prompts)
+        .then(props => {
+
+          this.page = props.page;
+          this.tab = props.tab;
 
 
-      if(this.page && this.tab) {
+          if(this.page && this.tab) {
 
-        this.page = this.page.toLowerCase();
-        this.tab = this.tab.toLowerCase();
+            this.page = this.page.toLowerCase();
+            this.tab = this.tab.toLowerCase();
 
-        const _prompts = [
-          {
-            when: () => typeof this.name === 'undefined',
-            type: 'input',
-            name: 'name',
-            message: 'Enter tab name',
-            default: `${this.ucFirst(this.tab)} (Beta)`
+            const _prompts = [
+              {
+                when: () => typeof this.name === 'undefined',
+                type: 'input',
+                name: 'name',
+                message: 'Enter tab name',
+                default: `${this.ucFirst(this.tab)} (Beta)`
+              }
+            ];
+
+            return this.prompt(_prompts);
+          } else {
+            this.abort = true;
           }
-        ];
+        })
+        .then(_props => {
+          this.tabName = _props.name;
 
-        return this.prompt(_prompts);
-      } else {
-        this.abort = true;
-      }
-    })
-      .then(_props => {
-      this.tabName = _props.name;
-
-      if(this.tabName) {
-        done();
-      } else {
-        this.abort = true;
-      }
-    })
-    ;
+          if(this.tabName) {
+            done();
+          } else {
+            this.abort = true;
+          }
+        });
+    } else {
+      this.log(
+        chalk.yellow('\nUnable to find any pages.\n')
+      );
+    }
   }
 
   writing() {
@@ -78,7 +93,7 @@ module.exports = class extends BaseGenerator {
       // this.copyAndReplace('dummyfile.txt', 'dummyfile.txt');
 
       const dirs = [
-        'src',
+        './src',
         './src/app',
         './src/app/entities',
         `./src/app/entities/${this.page}`,
@@ -217,5 +232,8 @@ import {${PageTabName}Effects} from '@store/${PageTabDir}/effects';\n\n@NgModule
   install() {
     // this.installDependencies();
     // fs.unlinkSync('.yo-repository');
+    this.log(
+      chalk.blue('\nThank you for using generator! See you!\n')
+    );
   }
 };
