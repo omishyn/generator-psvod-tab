@@ -20,6 +20,7 @@ export namespace PAGE_TAB_NAMEApiModel {
 	export interface Response {
 		docs: {
 			chart: MappedByGranularity<ChartSeries>;
+      averageLines?: any
 		};
 	}
 }

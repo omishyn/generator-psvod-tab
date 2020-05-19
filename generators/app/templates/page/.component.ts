@@ -26,7 +26,7 @@ export class PAGE_TAB_NAMEComponent implements OnDestroy, OnChanges {
 
 	@Output() changeGrouping = new EventEmitter<Grouping>();
 
-	chartNames = CHART_NAMES.PAGE_NAME.TAB_NAME;
+	chartNames = CHART_NAMES.page_NAME.tab_NAME;
 
 	exportXlsx$: ExportChartSubjects = {
 		[this.chartNames.name]: new BehaviorSubject('')

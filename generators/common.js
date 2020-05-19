@@ -61,7 +61,9 @@ module.exports = class extends Generator {
     this.replaceContent(filePath, 'PAGE_TAB_DIR', PageTabDir, true);
     this.replaceContent(filePath, 'PAGE_TAB_REF', PageTabRef, true);
 
+    this.replaceContent(filePath, 'page_NAME', this.page.toLowerCase(), true);
     this.replaceContent(filePath, 'PAGE_NAME', this.ucFirst(this.page), true);
+    this.replaceContent(filePath, 'tab_NAME', this.tab.toLowerCase(), true);
     this.replaceContent(filePath, 'TAB_NAME', this.ucFirst(this.tab), true);
   }
 
