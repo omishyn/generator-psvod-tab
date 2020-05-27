@@ -23,6 +23,8 @@ import {ExportHelper} from '@shared/helpers/export/general.export.helper';
 export class PAGE_TAB_NAMEComponent implements OnDestroy, OnChanges {
 	@Input() chartData: any;
 	@Input() chartLoadingStatus: LoadingStatus;
+  @Input() groupings: Grouping[];
+  @Input() grouping: Grouping;
 
 	@Output() changeGrouping = new EventEmitter<Grouping>();
 
