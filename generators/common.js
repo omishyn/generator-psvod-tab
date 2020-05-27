@@ -4,6 +4,7 @@ const Utils = require('./utils');
 const { readdirSync, statSync } = require('fs');
 const { join } = require('path');
 const dirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory());
+const lodash = require('lodash');
 
 module.exports = class extends Generator {
   /**
@@ -51,8 +52,8 @@ module.exports = class extends Generator {
    */
   replaceAll(filePath) {
 
-    const PageTabName = `${this.ucFirst(this.page)}${this.ucFirst(this.tab)}`;
-    const pageTabName = `${this.page}${this.ucFirst(this.tab)}`;
+    const PageTabName = `${this.ucFirst(this.page)}${this.ucFirst(lodash.camelCase(this.tab))}`;
+    const pageTabName = `${this.page}${this.ucFirst(lodash.camelCase(this.tab))}`;
     const PageTabDir = `${this.page}/${this.tab}`;
     const PageTabRef = `${this.page}-${this.tab}`;
 
