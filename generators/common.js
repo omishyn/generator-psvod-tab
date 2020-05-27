@@ -44,6 +44,18 @@ module.exports = class extends Generator {
     return dirs('./src/app/pages');
   }
 
+  getConstants() {
+    return {
+      PageTabName: `${this.ucFirst(this.page)}${this.ucFirst(lodash.camelCase(this.tab))}`,
+      pageTabName: `${this.page}${this.ucFirst(lodash.camelCase(this.tab))}`,
+      PageTabDir: `${this.page}/${this.tab}`,
+      PageTabRef: `${this.page}-${this.tab}`,
+      pageName: this.page.toLowerCase(),
+      tabName: lodash.camelCase(this.tab.toLowerCase()),
+      PageName: this.ucFirst(this.page),
+      TabName: this.ucFirst(lodash.camelCase(this.tab))
+    }
+  }
   /**
    * Replace content with provided content
    *
@@ -52,20 +64,17 @@ module.exports = class extends Generator {
    */
   replaceAll(filePath) {
 
-    const PageTabName = `${this.ucFirst(this.page)}${this.ucFirst(lodash.camelCase(this.tab))}`;
-    const pageTabName = `${this.page}${this.ucFirst(lodash.camelCase(this.tab))}`;
-    const PageTabDir = `${this.page}/${this.tab}`;
-    const PageTabRef = `${this.page}-${this.tab}`;
+    const pTN = this.getConstants();
 
-    this.replaceContent(filePath, 'PAGE_TAB_NAME', PageTabName, true);
-    this.replaceContent(filePath, 'page_TAB_NAME', pageTabName, true);
-    this.replaceContent(filePath, 'PAGE_TAB_DIR', PageTabDir, true);
-    this.replaceContent(filePath, 'PAGE_TAB_REF', PageTabRef, true);
+    this.replaceContent(filePath, 'PAGE_TAB_NAME', pTN.PageTabName, true);
+    this.replaceContent(filePath, 'page_TAB_NAME', pTN.pageTabName, true);
+    this.replaceContent(filePath, 'PAGE_TAB_DIR', pTN.PageTabDir, true);
+    this.replaceContent(filePath, 'PAGE_TAB_REF', pTN.PageTabRef, true);
 
-    this.replaceContent(filePath, 'page_NAME', this.page.toLowerCase(), true);
-    this.replaceContent(filePath, 'PAGE_NAME', this.ucFirst(this.page), true);
-    this.replaceContent(filePath, 'tab_NAME', this.tab.toLowerCase(), true);
-    this.replaceContent(filePath, 'TAB_NAME', this.ucFirst(this.tab), true);
+    this.replaceContent(filePath, 'page_NAME', pTN.pageName, true);
+    this.replaceContent(filePath, 'PAGE_NAME', pTN.PageName, true);
+    this.replaceContent(filePath, 'tab_NAME', pTN.tabName, true);
+    this.replaceContent(filePath, 'TAB_NAME', pTN.TabName, true);
   }
 
   /**

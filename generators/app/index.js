@@ -3,6 +3,7 @@ const BaseGenerator = require('../common');
 const chalk = require('chalk');
 const yoSay = require('yosay');
 const fs = require('fs');
+const lodash = require('lodash');
 
 module.exports = class extends BaseGenerator {
   prompting() {
@@ -60,7 +61,7 @@ module.exports = class extends BaseGenerator {
                 type: 'input',
                 name: 'name',
                 message: 'Enter tab name',
-                default: `${this.ucFirst(this.tab)} (Beta)`
+                default: `${this.ucFirst(lodash.camelCase(this.tab))} (Beta)`
               }
             ];
 
@@ -194,37 +195,34 @@ module.exports = class extends BaseGenerator {
       );
 
       // CHANGE CONTENT
-      const PageTabName = `${this.ucFirst(this.page)}${this.ucFirst(this.tab)}`;
-      const pageTabName = `${this.page}${this.ucFirst(this.tab)}`;
-      const PageTabDir = `${this.page}/${this.tab}`;
-      const PageTabRef = `${this.page}-${this.tab}`;
+      const pTN = this.getConstants();
 
       let dist = `./src/app/pages/${this.page}/${this.page}.routes.ts`;
       this.removeCR(dist);
       this.replaceContent(dist,
-        '},', `},\n\t...${PageTabName}TabRoutes,`, false);
+        '},', `},\n\t...${pTN.PageTabName}TabRoutes,`, false);
       this.replaceContent(dist,
-        '\nconst routes:', `import {${PageTabName}TabRoutes} from '@pages/${PageTabDir}/${PageTabRef}.router';\n\nconst routes:`, false);
+        '\nconst routes:', `import {${pTN.PageTabName}TabRoutes} from '@pages/${pTN.PageTabDir}/${pTN.PageTabRef}.router';\n\nconst routes:`, false);
 
       dist = `./src/app/store/effects.module.ts`;
       this.removeCR(dist);
       this.replaceContent(dist,
-        '\n@NgModule', `import {${PageTabName}ApiService} from '@shared/api/${PageTabDir}/${PageTabRef}.api.service';
-import {${PageTabName}Effects} from '@store/${PageTabDir}/effects';\n\n@NgModule`, false);
+        '\n@NgModule', `import {${pTN.PageTabName}ApiService} from '@shared/api/${pTN.PageTabDir}/${pTN.PageTabRef}.api.service';
+import {${pTN.PageTabName}Effects} from '@store/${pTN.PageTabDir}/effects';\n\n@NgModule`, false);
       this.replaceContent(dist,
-        'EffectsModule.forRoot([', `EffectsModule.forRoot([\n\t\t\t${PageTabName}Effects,`, false);
+        'EffectsModule.forRoot([', `EffectsModule.forRoot([\n\t\t\t${pTN.PageTabName}Effects,`, false);
       this.replaceContent(dist,
-        'providers: [', `providers: [\n\t\t${PageTabName}ApiService,`, false);
+        'providers: [', `providers: [\n\t\t${pTN.PageTabName}ApiService,`, false);
 
       dist = `./src/app/store/rootReducer.ts`;
       this.removeCR(dist);
       this.replaceContent(dist,
-        '\nexport const reducers = {', `import {${pageTabName}Reducer, ${PageTabName}State} from '@store/${PageTabDir}/reducer';
+        '\nexport const reducers = {', `import {${pTN.pageTabName}Reducer, ${pTN.PageTabName}State} from '@store/${pTN.PageTabDir}/reducer';
         \nexport const reducers = {`, false);
       this.replaceContent(dist,
-        'export const reducers = {', `export const reducers = {\n\t${pageTabName}: ${pageTabName}Reducer,`, false);
+        'export const reducers = {', `export const reducers = {\n\t${pTN.pageTabName}: ${pTN.pageTabName}Reducer,`, false);
       this.replaceContent(dist,
-        'export interface AppState {', `export interface AppState {\n\t${pageTabName}: ${PageTabName}State;`, false);
+        'export interface AppState {', `export interface AppState {\n\t${pTN.pageTabName}: ${pTN.PageTabName}State;`, false);
 
     }
   }

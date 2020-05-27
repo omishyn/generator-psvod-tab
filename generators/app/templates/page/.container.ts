@@ -4,8 +4,8 @@ import {Grouping, LoadingStatus} from '@shared/types/common';
 import {Store} from '@ngrx/store';
 import {AppState} from '@store/rootReducer';
 import {waitForGlobalFiltersUntilDestroy} from '@shared/helpers/store/effects.helper';
-import {PAGE_TAB_NAMEActions} from '@store/PageTabDir/actions';
-import {page_TAB_NAMESelectors} from '@store/PageTabDir/selectors';
+import {PAGE_TAB_NAMEActions} from '@store/PAGE_TAB_DIR/actions';
+import {page_TAB_NAMESelectors} from '@store/PAGE_TAB_DIR/selectors';
 
 @Component({
 	selector: 'PAGE_TAB_REF',
