@@ -5,7 +5,7 @@ import {PAGE_TAB_NAMEContainer} from '@pages/PAGE_TAB_DIR/PAGE_TAB_REF.container
 
 export const PAGE_TAB_NAMETabRoutes: Routes = [
 	{
-		path: 'tab_NAME',
+		path: 'tab_name',
 		loadChildren: () => import('./PAGE_TAB_REF.module').then((m) => m.PAGE_TAB_NAMETabModule)
 	}
 ];

@@ -54,8 +54,9 @@ export class PAGE_TAB_NAMEApiService extends ApiService {
 		granularity: PeriodEnum,
 		grouping: Grouping
 	): Observable<any> {
+	  // as sample, 'acquisitionTrials.getAcquisitionTrialsGrid'
 		// return super.post(
-		// 	'acquisitionTrials.getAcquisitionTrialsGrid',
+		// 	'page_NAME.getPAGE_TAB_NAMEChartData',
 		// 	params,
 		// 	false,
 		// 	PAGE_TAB_NAMEApiService.mapData.bind(null, granularity, grouping)
@@ -63,4 +64,13 @@ export class PAGE_TAB_NAMEApiService extends ApiService {
 
 		return of(PAGE_TAB_NAMEApiService.mapData(granularity, grouping, CHART_DATA));
 	}
+
+  getChartData(params: {}): Observable<any> {
+    return super.post(
+      'page_NAME.getPAGE_TAB_NAME',
+      params,
+      false,
+      res => res.docs
+    );
+  }
 }

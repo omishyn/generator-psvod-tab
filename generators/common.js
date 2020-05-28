@@ -53,7 +53,8 @@ module.exports = class extends Generator {
       pageName: this.page.toLowerCase(),
       tabName: lodash.camelCase(this.tab.toLowerCase()),
       PageName: this.ucFirst(this.page),
-      TabName: this.ucFirst(lodash.camelCase(this.tab))
+      TabName: this.ucFirst(lodash.camelCase(this.tab)),
+      tab_name: this.tab.toLowerCase()
     }
   }
   /**
@@ -75,6 +76,8 @@ module.exports = class extends Generator {
     this.replaceContent(filePath, 'PAGE_NAME', pTN.PageName, true);
     this.replaceContent(filePath, 'tab_NAME', pTN.tabName, true);
     this.replaceContent(filePath, 'TAB_NAME', pTN.TabName, true);
+
+    this.replaceContent(filePath, 'tab_name', pTN.tab_name, true);
   }
 
   /**
