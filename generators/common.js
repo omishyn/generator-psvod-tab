@@ -45,16 +45,19 @@ module.exports = class extends Generator {
   }
 
   getConstants() {
+    const camelTab = lodash.camelCase(this.tab);
+    const camelPage = lodash.camelCase(this.page);
     return {
-      PageTabName: `${this.ucFirst(this.page)}${this.ucFirst(lodash.camelCase(this.tab))}`,
-      pageTabName: `${this.page}${this.ucFirst(lodash.camelCase(this.tab))}`,
+      PageTabName: `${this.ucFirst(camelPage)}${this.ucFirst(camelTab)}`,
+      pageTabName: `${camelPage}${this.ucFirst(camelTab)}`,
       PageTabDir: `${this.page}/${this.tab}`,
       PageTabRef: `${this.page}-${this.tab}`,
-      pageName: this.page.toLowerCase(),
+      pageName: lodash.camelCase(this.page.toLowerCase()),
       tabName: lodash.camelCase(this.tab.toLowerCase()),
-      PageName: this.ucFirst(this.page),
-      TabName: this.ucFirst(lodash.camelCase(this.tab)),
-      tab_name: this.tab.toLowerCase()
+      PageName: this.ucFirst(camelPage),
+      TabName: this.ucFirst(camelTab),
+      tab_name: this.tab.toLowerCase(),
+      page_name: this.page.toLowerCase()
     }
   }
   /**
@@ -78,6 +81,7 @@ module.exports = class extends Generator {
     this.replaceContent(filePath, 'TAB_NAME', pTN.TabName, true);
 
     this.replaceContent(filePath, 'tab_name', pTN.tab_name, true);
+    this.replaceContent(filePath, 'page_name', pTN.page_name, true);
   }
 
   /**
